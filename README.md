@@ -74,6 +74,82 @@ public GridSpace(Vector3 position, Vector2 gridNumber, bool walkable = true)
 ```
 These are just two of the many functions in the GridSpace class alone, but they give an idea of what I decided to keep track of in each GridSpace instance. When initialized, each is given a position, gridNumber, and a bool to determine whether it is walkable. This "walkable" bool is important when using my floodfill algorithm that determines where a unit can move to!
 
+
+```
+ private void RunEnemyTurn(GridBattleUnit gridBattleUnit)
+    {
+        //list of potential turns for the AI to choose from\
+        List<PotentialTurn> potentialTurns = new List<PotentialTurn>();
+
+        //find list of moves that unit has mp to use
+        List<Move> MovesUsableMp = new List<Move>();
+        foreach(Move move in gridBattleUnit.Monster.Moves)
+        {
+            if(CheckIfManaToUseMove(gridBattleUnit, move))
+            {
+                MovesUsableMp.Add(move);
+            }
+        }
+
+
+        HideCursor();
+        state = GridBattleState.EnemyTurn;
+
+        List<GridSpace> potentialMoves = new List<GridSpace>();
+        potentialMoves = grid.ReturnFlood(gridBattleUnit.GridNumber,gridBattleUnit.moveSpaces,FloodType.Walkable);
+
+        //decide which movetarget to use
+        MoveTarget moveTarget = MoveTarget.Foe;
+
+        foreach(GridSpace gridSpace in potentialMoves)
+        {
+            foreach(Move move in MovesUsableMp)
+            {
+                if(move.Base.Target == moveTarget)
+                {
+                    //create list of all areas move can be used,, floodtype is ally because we want to target allies as an enemy
+                    List<GridSpace> potentialMoveTargetSpaces = new List<GridSpace>();
+                    potentialMoveTargetSpaces = grid.ReturnFlood(gridSpace.gridNumber,move.Base.Range,move.Base.WhatToFlood);
+                    foreach(GridSpace gridSpace1 in potentialMoveTargetSpaces)
+                    {
+                        int value = SimulateMove(gridBattleUnit,gridSpace1.gridNumber,move);
+                        if(value > 0)
+                        {
+                            //store space moved to, attack used, and value in potential turn list
+                            PotentialTurn newPotentialTurn = new PotentialTurn();
+                            newPotentialTurn.moveToGridNumber = gridSpace.gridNumber;
+                            newPotentialTurn.moveToUse = move;
+                            newPotentialTurn.value = value;
+                            newPotentialTurn.moveUseGridNumber = gridSpace1.gridNumber;
+                            potentialTurns.Add(newPotentialTurn);
+                        }                       
+                    }
+                }
+            }
+        }
+
+        potentialTurns = potentialTurns.OrderByDescending(x => x.value).ToList<PotentialTurn>();
+        if(potentialTurns.Count == 0)
+        {
+            StartNextTurn();
+            return;
+        }
+
+        List<PotentialTurn> bestTurns = potentialTurns.Where(x => x.value >= potentialTurns[0].value).ToList<PotentialTurn>();
+
+        int a = UnityEngine.Random.Range(0,bestTurns.Count);
+        PotentialTurn turnToRun = bestTurns[a];
+        
+        gridBattleUnit.moveGameObject(turnToRun.moveToGridNumber);
+        
+        gridBattleUnit.FaceNumber(turnToRun.moveUseGridNumber);
+        
+
+        StartCoroutine(UseMove(turnToRun.moveToUse,GetFoesInMoveUse(gridBattleUnit,turnToRun.moveUseGridNumber,turnToRun.moveToUse)));
+    }
+```
+This is perhaps the system I am most proud of! This handles the enemy AI. The idea is that I process every possible turn that the enemy can make, and store each choice within that turn into a PotentialTurn class. I then call an algorithm to evaluate that turn and give it a value, currently based on how much damage is dealt to ally units. I love this system though because if I decided to fully flesh out this game I can easily modify the value determining algorithm to take account of other types of moves or the gamestate itself, for example valuing healing an enemy (ally from the enemies perspective) over attacking player units when an enemy units health drops below a certain threshold! Man, I love coding :).
+
 --More Information On the Way--
 
 ## Pokemon FireRed Reverse-Engineering Project
