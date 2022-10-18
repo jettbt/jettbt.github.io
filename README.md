@@ -18,6 +18,61 @@ I started and completed this project in the summer of 2022 as I wanted to see if
 ![Grid9](https://user-images.githubusercontent.com/110650172/196539918-e561746d-77d3-4eb8-93f1-f7cd53a4ab59.png)
 ![grid10](https://user-images.githubusercontent.com/110650172/196539930-83cce34e-7fff-40f4-9fc8-c6b0312d8207.png)
 
+##### Code snippits
+```
+public void DrawGrid()
+    {
+        //fills gridspace array with gridspace instances, attaches their grid number to them and sets their position, if
+        //there is a collider layer gameobject on its position, it will set the grid instance to be unwalkable, it then draws
+        //the space, creating a gameobject to serve as the image for the gridspace instance, also names it based on its
+        //gridnumber
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                Vector2 gridNumber = new Vector2(i,j);
+                gridArray[i,j] = new GridSpace(GridNumberToVector3(gridNumber), gridNumber);
+                if(Physics2D.OverlapCircle(gridArray[i,j].position, 0.03f,GameLayers.i.SolidLayer) != null)
+                {
+                    gridArray[i,j].walkable = false;
+                }
+                DrawSpace(gridArray[i,j]);
+                gridArray[i,j].Initialize();
+            }
+        }
+    }
+```
+I use this function in conjunction with a few others to draw a grid based on certain parameters set in the grid class when initially constructed like "width" and "height". The grid system is really a list of GridSpace instances. Here is some insight into the GridSpace class:
+
+```
+public GridSpace(Vector3 position, Vector2 gridNumber, bool walkable = true)
+    {
+        this.position = position;
+        this.gridNumber = gridNumber;
+        this.walkable = walkable;
+    }
+
+    public bool Floodable(FloodType whatToFlood = FloodType.Walkable)
+    {
+        switch(whatToFlood)
+        {
+            case FloodType.Walkable:
+                if(battleUnit != null) return false;
+                if(!walkable) return false;
+                else return true;
+            
+            case FloodType.UnitsNEmpty:
+                if(!walkable) return false;
+                return true;
+            
+
+
+        }
+        return true;
+        
+    }
+```
+These are just two of the many functions in the GridSpace class alone, but they give an idea of what I decided to keep track of in each GridSpace instance. When initialized, each is given a position, gridNumber, and a bool to determine whether it is walkable. This "walkable" bool is important when using my floodfill algorithm that determines where a unit can move to!
 
 --More Information On the Way--
 
