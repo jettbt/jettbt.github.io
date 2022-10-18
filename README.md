@@ -4,4 +4,4 @@ Welcome to my page! Here you can find information about me and my projects. If y
 
 ## Grid-Based Battle System Game
 
-!(jett.github.io/assets/images/Overworld.png)
+![](jett.github.io/assets/images/Overworld.png)
