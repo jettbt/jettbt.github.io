@@ -4,7 +4,7 @@ Welcome to my page! Here you can find information about me and my projects. If y
 
 ## Grid-Based Battle System Game
 
-I started and completed this project in the summer of 2022 as I wanted to see if I could create a functioning grid based battle system. I did this and went a bit further, creating custom art for the game, for characters, UI, and backgrounds. This demo is complete with difficult enemy AI, many battle phases, and little flourishes like tiny health bars popping up when units take damage, area of effect moves that span unique grid shapes, status bar to show unit information on highlight, and multiple different units that level up and learn different moves at certain levels.
+I started and completed this project in the summer of 2022 as I wanted to see if I could create a functioning grid based battle system. I did this and went a bit further, creating custom art for the game, characters, UI, and backgrounds. This demo is complete with difficult enemy AI, many battle phases, and little flourishes like tiny health bars popping up when units take damage, area of effect moves that span unique grid shapes, status bar to show unit information on highlight, and multiple different units that level up and learn different moves at certain levels.
 
 ##### In-game Screenshots
 ![Grid1](https://user-images.githubusercontent.com/110650172/196539815-b455a380-2068-4709-b1c4-5216675b737d.png)
