@@ -8,7 +8,6 @@ I started and completed this project in the summer of 2022 as I wanted to see if
 
 ##### In-game Screenshots
 ![Grid1](https://user-images.githubusercontent.com/110650172/196539815-b455a380-2068-4709-b1c4-5216675b737d.png)
-![Grid2](https://user-images.githubusercontent.com/110650172/196539846-b64978d9-0fb2-4b4a-ad86-a6be12f68baf.png)
 ![Grid3](https://user-images.githubusercontent.com/110650172/196539854-9584c49e-a5f9-46e8-924b-8489d3e8ec42.png)
 ![Grid4](https://user-images.githubusercontent.com/110650172/196539860-172149d8-27e2-49d5-ac6a-5ca773105f40.png)
 ![Grid5](https://user-images.githubusercontent.com/110650172/196539872-98c64916-f957-42eb-a93b-b24911f0c97b.png)
